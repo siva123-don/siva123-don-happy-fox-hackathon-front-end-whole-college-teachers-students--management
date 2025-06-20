@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - AcadeX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwjmYgFRe3i-6uEysNVDYbk2xe-OeNKjg",
+            authDomain: "acadex-efefa.firebaseapp.com",
+            projectId: "acadex-efefa",
+            storageBucket: "acadex-efefa.appspot.com",
+            messagingSenderId: "175625880958",
+            appId: "1:175625880958:web:9a054de3dc728be171df2f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function updateStudentDetails() {
+            const name = document.getElementById('name').value;
+            const studentClass = document.getElementById('class').value;
+            const cgpa = document.getElementById('cgpa').value;
+            const teacherName = document.getElementById('teacherName').value;
+
+            console.log("Updating student details...", name, studentClass, cgpa, teacherName);
+
+            db.collection("students").doc("student1").set({
+                name,
+                class: studentClass,
+                cgpa,
+                teacherName
+            }).then(() => {
+                console.log("Details updated successfully!");
+                alert("Details updated successfully!");
+                loadStudentDetails();
+            }).catch(error => {
+                console.error("Error updating details: ", error);
+            });
+        }
+
+        function loadStudentDetails() {
+            db.collection("students").doc("student1").get().then(doc => {
+                if (doc.exists) {
+                    document.getElementById('displayName').textContent = doc.data().name || "Student";
+                    document.getElementById('displayCGPA').textContent = doc.data().cgpa || "N/A";
+                    document.getElementById('displayClass').textContent = doc.data().class || "N/A";
+                    document.getElementById('displayTeacher').textContent = doc.data().teacherName || "N/A";
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('saveButton').addEventListener("click", updateStudentDetails);
+            loadStudentDetails();
+        });
+
+        document.getElementById("update-details-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const cgpa = document.getElementById("cgpa").value;
+
+            const user = firebase.auth().currentUser;
+            if (user) {
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(user.uid);
+
+                try {
+                    await userRef.set({ name, cgpa }, { merge: true });
+                    alert("Details updated successfully!");
+                    window.location.href = "student-dashboard.html";
+                } catch (error) {
+                    console.error("Error updating details: ", error);
+                }
+            }
+        });
+    </script>
+</head>
+<body class="bg-black text-white">
+    <div class="container mx-auto px-6 pt-28 pb-20">
+        <h1 class="text-4xl font-bold gradient-text mb-4">Welcome Back, <span id="displayName">Student</span>!</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div class="feature-card p-6 text-center">
+                <h3 class="text-xl text-gray-400">Current GPA</h3>
+                <p class="text-3xl font-bold gradient-text mt-2" id="displayCGPA">N/A</p>
+            </div>
+            <div class="feature-card p-6 text-center">
+                <h3 class="text-xl text-gray-400">Class</h3>
+                <p class="text-3xl font-bold gradient-text mt-2" id="displayClass">N/A</p>
+            </div>
+            <div class="feature-card p-6 text-center">
+                <h3 class="text-xl text-gray-400">Teacher</h3>
+                <p class="text-3xl font-bold gradient-text mt-2" id="displayTeacher">N/A</p>
+            </div>
+        </div>
+        <button onclick="document.getElementById('updateModal').style.display='block'" 
+            class="bg-pink-500 px-4 py-2 rounded-full">Update Details</button>
+    </div>
+    
+    <div id="updateModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-gray-900 p-8 rounded-lg">
+            <h2 class="text-xl font-bold">Update Details</h2>
+            <form id="update-details-form" class="flex flex-col space-y-4">
+                <input type="text" id="name" placeholder="Enter your name" class="px-4 py-2 rounded">
+                <input type="text" id="cgpa" placeholder="Enter your CGPA" class="px-4 py-2 rounded">
+                <button type="submit" class="px-4 py-2 bg-pink-500 text-white rounded">Save</button>
+            </form>
+            <button onclick="document.getElementById('updateModal').style.display='none'" class="bg-gray-600 px-4 py-2 rounded-full mt-4">Close</button>
+        </div>
+    </div>
+</body>
+</html>

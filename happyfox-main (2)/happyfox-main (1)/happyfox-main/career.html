@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career - Campus Connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .nav-background {
+            background: rgba(128, 128, 128, 0.5);
+            padding-top: 1rem;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FF0000, #FF69B4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .gradient-button {
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .career-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin-top: 2rem;
+        }
+
+        .career-card {
+            flex: 0 0 220px;
+            min-height: 180px;
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(128, 0, 128, 0.1));
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .career-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .career-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
+            border-color: rgba(255, 105, 180, 0.5);
+        }
+
+        .career-card:hover::before {
+            opacity: 0.9;
+        }
+
+        .career-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .career-icon {
+            font-size: 28px;
+            color: #FF69B4;
+            margin-bottom: 0.75rem;
+            transition: all 0.5s ease;
+        }
+
+        .career-card:hover .career-icon {
+            color: white;
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        .career-title {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .career-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .career-card:hover .career-content {
+            transform: scale(1.05);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            50% {
+                transform: scale(1.1) translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .career-card {
+            animation: popIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: calc(var(--order) * 0.2s);
+            opacity: 0;
+        }
+
+        /* Main heading style */
+        .main-heading {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #FF0000, #FF69B4, #800080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Sub heading style */
+        .sub-heading {
+            font-size: 1.25rem;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Card title style */
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Card description style */
+        .card-description {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        /* Navigation links */
+        .nav-link {
+            font-size: 1.125rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-background">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <div class="logo-text">
+                    AcadeX
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-pink-500">Home</a>
+                    <a href="features.html" class="text-white hover:text-pink-500">Features</a>
+                    <a href="events.html" class="text-white hover:text-pink-500">Events</a>
+                    <a href="career.html" class="text-white hover:text-pink-500">Career</a>
+                    <a href="contact.html" class="text-white hover:text-pink-500">Contact</a>
+                </div>
+                <a href="login.html" class="gradient-button px-8 py-2 rounded-lg">
+                    LOGIN
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4 gradient-text">Career Opportunities</h1>
+                <p class="text-lg text-gray-300">Explore exciting career paths in education technology</p>
+            </div>
+
+            <div class="career-grid">
+                <!-- Resume Building -->
+                <div class="career-card" style="--order: 1">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="career-title">Resume Building</h3>
+                        <p class="career-description">
+                            AI-powered resume optimization and professional portfolio creation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Mock Interviews -->
+                <div class="career-card" style="--order: 2">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="career-title">Mock Interviews</h3>
+                        <p class="career-description">
+                            Practice with AI interviewers and get real-time feedback.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Industry Connect -->
+                <div class="career-card" style="--order: 3">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="career-title">Industry Connect</h3>
+                        <p class="career-description">
+                            Connect with top companies and industry mentors.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Skill Assessment -->
+                <div class="career-card" style="--order: 4">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="career-title">Skill Assessment</h3>
+                        <p class="career-description">
+                            Evaluate and improve your technical skills with experts.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Job Matching -->
+                <div class="career-card" style="--order: 5">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3 class="career-title">Job Matching</h3>
+                        <p class="career-description">
+                            AI-driven job recommendations based on your profile.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Career Guidance -->
+                <div class="career-card" style="--order: 6">
+                    <div class="career-content">
+                        <div class="career-icon">
+                            <i class="fas fa-compass"></i>
+                        </div>
+                        <h3 class="career-title">Career Guidance</h3>
+                        <p class="career-description">
+                            Personalized roadmaps and expert counseling sessions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html> 

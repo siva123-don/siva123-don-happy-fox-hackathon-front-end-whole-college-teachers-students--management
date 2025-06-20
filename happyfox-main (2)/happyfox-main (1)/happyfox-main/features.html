@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - Campus Connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .nav-background {
+            background: rgba(128, 128, 128, 0.5);
+        }
+
+        .logo-text {
+            background: linear-gradient(45deg, #FF0000, #FF69B4, #800080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .gradient-button {
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .feature-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin-top: 2rem;
+        }
+
+        .feature-grid::-webkit-scrollbar {
+            display: none;  /* Hide scrollbar for Chrome, Safari and Opera */
+        }
+
+        .feature-card {
+            flex: 0 0 220px; /* Smaller card width */
+            min-height: 180px; /* Smaller card height */
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(128, 0, 128, 0.1));
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
+            border-color: rgba(255, 105, 180, 0.5);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.9;
+        }
+
+        .feature-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.25rem;
+            text-align: center;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover .feature-content {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 28px; /* Smaller icon */
+            margin-bottom: 0.75rem;
+            color: #FF69B4;
+            transition: all 0.5s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            color: white;
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        .feature-title {
+            font-size: 1.2rem; /* Smaller title */
+            margin-bottom: 0.5rem;
+            color: white;
+            transition: all 0.5s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .feature-description {
+            font-size: 0.9rem; /* Smaller description */
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.5s ease;
+        }
+
+        .feature-card:hover .feature-description {
+            color: white;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            50% {
+                transform: scale(1.1) translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .feature-card {
+            animation: popIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: calc(var(--order) * 0.2s);
+            opacity: 0;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .feature-card {
+            background-size: 200% 200%;
+            animation: 
+                popIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+                gradientMove 3s ease infinite;
+            animation-delay: calc(var(--order) * 0.2s), 0s;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card {
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: calc(var(--order) * 0.2s);
+            opacity: 0;
+        }
+
+        .feature-card.ai-learning {
+            background: linear-gradient(45deg, rgba(255, 0, 0, 0.2), rgba(28, 0, 28, 0.8));
+        }
+
+        .feature-card.vr-classes {
+            background: linear-gradient(45deg, #FF69B4, #800080);
+        }
+
+        .feature-card.global-network {
+            background: linear-gradient(45deg, rgba(28, 0, 28, 0.8), rgba(128, 0, 128, 0.2));
+        }
+
+        /* Make layout responsive */
+        @media (max-width: 768px) {
+            .feature-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-background">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-bold logo-text">
+                    AcadeX
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-pink-500">Home</a>
+                    <a href="features.html" class="text-white hover:text-pink-500">Features</a>
+                    <a href="events.html" class="text-white hover:text-pink-500">Events</a>
+                    <a href="career.html" class="text-white hover:text-pink-500">Career</a>
+                    <a href="contact.html" class="text-white hover:text-pink-500">Contact</a>
+                </div>
+                <a href="login.html" class="gradient-button px-8 py-2 rounded-lg">
+                    LOGIN
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen pt-16">
+        <div class="container">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl font-bold mb-4 gradient-text">
+                    Platform Features
+                </h1>
+                <p class="text-lg text-gray-300">
+                    Discover our cutting-edge learning technologies
+                </p>
+            </div>
+
+            <div class="feature-grid">
+                <!-- AI Learning -->
+                <div class="feature-card" style="--order: 1">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="feature-title">AI Learning</h3>
+                        <p class="feature-description">
+                            Personalized learning paths powered by AI.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- VR Classes -->
+                <div class="feature-card" style="--order: 2">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-vr-cardboard"></i>
+                        </div>
+                        <h3 class="feature-title">VR Classes</h3>
+                        <p class="feature-description">
+                            Immersive virtual reality classrooms.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Global Network -->
+                <div class="feature-card" style="--order: 3">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="feature-title">Global Network</h3>
+                        <p class="feature-description">
+                            Connect with students worldwide.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html> 

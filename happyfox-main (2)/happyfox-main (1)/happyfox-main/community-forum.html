@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum - AcadeX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-black text-white">
+    <nav class="bg-gray-900 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold gradient-text">AcadeX Community</h1>
+            <a href="javascript:history.back()" class="hover:text-pink-500">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold mb-4">Discussion Forum</h2>
+            <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded">
+                Create New Post
+            </button>
+        </div>
+
+        <!-- Sample Forum Posts -->
+        <div class="space-y-4">
+            <div class="bg-gray-800 p-4 rounded">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-user-circle text-2xl mr-2"></i>
+                    <div>
+                        <h3 class="font-bold">Discussion Title</h3>
+                        <p class="text-sm text-gray-400">Posted by Username • 2 hours ago</p>
+                    </div>
+                </div>
+                <p class="mb-4">Post content goes here...</p>
+                <div class="flex items-center space-x-4 text-sm">
+                    <button class="text-gray-400 hover:text-pink-500">
+                        <i class="fas fa-comment mr-1"></i> Reply
+                    </button>
+                    <button class="text-gray-400 hover:text-pink-500">
+                        <i class="fas fa-heart mr-1"></i> Like
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

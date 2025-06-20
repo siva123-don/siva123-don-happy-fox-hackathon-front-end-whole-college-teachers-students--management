@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AcadeX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            font-family: 'Rajdhani', sans-serif;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 105, 180, 0.1) 0%, transparent 40%);
+            animation: gradientAnimation 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-background {
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FF0000, #FF69B4, #9F2B68);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .login-container {
+            background: rgba(13, 13, 13, 0.95);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            padding: 2.5rem;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.3);
+        }
+
+        .login-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            width: 100%;
+            margin-bottom: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: #FF69B4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+            outline: none;
+        }
+
+        .login-button {
+            background: linear-gradient(45deg, #FF1493, #FF69B4);
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+        }
+
+        .role-button {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .role-button:hover {
+            background: rgba(255, 105, 180, 0.1);
+            border-color: rgba(255, 105, 180, 0.3);
+        }
+
+        .role-button.active {
+            background: linear-gradient(45deg, #FF1493, #FF69B4);
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .forgot-link {
+            color: #FF69B4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            color: #FF1493;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #FF1493, #FF69B4, #9F2B68);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="bg-gray-900 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold gradient-text">AcadeX</h1>
+            <div class="flex space-x-4">
+                <a href="community-forum.html" class="hover:text-pink-500">Community Forum</a>
+                <a href="admin-panel.html" class="hover:text-pink-500">
+                    <i class="fas fa-user-shield"></i> Admin Panel
+                </a>
+                <a href="login.html" class="hover:text-pink-500">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="login-container w-full max-w-md">
+            <h1 class="text-4xl font-bold gradient-text text-center mb-8">AcadeX Login</h1>
+
+            <!-- Role Selection -->
+            <div class="flex justify-center mb-4 space-x-4">
+                <button id="student-role" class="px-4 py-2 bg-pink-500 text-white rounded">Student</button>
+                <button id="teacher-role" class="px-4 py-2 bg-gray-700 text-white rounded">Teacher</button>
+                <button id="admin-role" class="px-4 py-2 bg-gray-700 text-white rounded">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </div>
+
+            <form onsubmit="loginUser(event)">
+                <input type="email" id="email" placeholder="Email" class="login-input" required>
+                <input type="password" id="password" placeholder="Password" class="login-input" required>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+
+            <p class="text-center mt-4">Don't have an account? <a href="register.html" class="forgot-link">Register</a></p>
+        </div>
+    </div>
+
+    <!-- Then your regular script -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwjmYgFRe3i-6uEysNVDYbk2xe-OeNKjg",
+            authDomain: "acadex-efefa.firebaseapp.com",
+            projectId: "acadex-efefa",
+            storageBucket: "acadex-efefa.appspot.com",
+            messagingSenderId: "175625880958",
+            appId: "1:175625880958:web:9a054de3dc728be171df2f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        let selectedRole = "student";
+
+        function selectRole(role) {
+            selectedRole = role;
+            localStorage.setItem("userRole", role);
+
+            document.getElementById("student-role").classList.remove("bg-pink-500");
+            document.getElementById("teacher-role").classList.remove("bg-pink-500");
+            document.getElementById("admin-role").classList.remove("bg-pink-500");
+
+            document.getElementById(`${role}-role`).classList.add("bg-pink-500");
+        }
+
+        document.getElementById("student-role").addEventListener("click", () => selectRole("student"));
+        document.getElementById("teacher-role").addEventListener("click", () => selectRole("teacher"));
+        document.getElementById("admin-role").addEventListener("click", () => selectRole("admin"));
+
+        async function loginUser(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                const db = firebase.firestore();
+                const userRef = db.collection('users').doc(user.uid);
+                const userSnap = await userRef.get();
+
+                if (userSnap.exists) {
+                    const userData = userSnap.data();
+                    const role = userData.role || "student";
+
+                    localStorage.setItem("userRole", role);
+
+                    if (role === "admin") {
+                        window.location.href = "admin-dashboard.html";
+                    } else if (role === "teacher") {
+                        window.location.href = "teacher-dashboard.html";
+                    } else {
+                        window.location.href = "student-dashboard.html";
+                    }
+                } else {
+                    alert("User role not found. Please register first.");
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

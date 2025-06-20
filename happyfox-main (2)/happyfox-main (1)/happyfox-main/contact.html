@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Campus Connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* Same base styles as before */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Contact-specific styles */
+        .contact-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .contact-input:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-card {
+            background: linear-gradient(45deg, rgba(255, 0, 0, 0.1), rgba(255, 105, 180, 0.1), rgba(0, 0, 128, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 105, 180, 0.4);
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.2);
+        }
+
+        .contact-icon {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation (same as other pages) -->
+    <nav class="fixed w-full z-50 nav-background">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-bold gradient-text tracking-wider">
+                    Campus Connect
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:gradient-text transition-colors duration-300">Home</a>
+                    <a href="features.html" class="text-white hover:gradient-text transition-colors duration-300">Features</a>
+                    <a href="events.html" class="text-white hover:gradient-text transition-colors duration-300">Events</a>
+                    <a href="career.html" class="text-white hover:gradient-text transition-colors duration-300">Career</a>
+                    <a href="contact.html" class="text-white hover:gradient-text transition-colors duration-300 gradient-text">Contact</a>
+                </div>
+                <a href="login.html" class="gradient-button px-8 py-2 rounded-lg">
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Content -->
+    <main class="min-h-screen pt-20">
+        <div class="container mx-auto px-6 py-12">
+            <div class="text-center mb-20">
+                <h1 class="main-heading gradient-text mb-8">
+                    Get in Touch
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 tracking-wide">
+                    We'd love to hear from you
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Contact Cards -->
+                <div class="contact-card p-6 rounded-xl text-center zoom-in card-1">
+                    <i class="fas fa-envelope text-4xl contact-icon mb-4 floating"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Email Us</h3>
+                    <p class="text-purple-200">support@campusconnect.com</p>
+                </div>
+
+                <div class="contact-card p-6 rounded-xl text-center zoom-in card-2">
+                    <i class="fas fa-phone text-4xl contact-icon mb-4 floating"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Call Us</h3>
+                    <p class="text-purple-200">+1 (555) 123-4567</p>
+                </div>
+
+                <div class="contact-card p-6 rounded-xl text-center zoom-in card-3">
+                    <i class="fas fa-map-marker-alt text-4xl contact-icon mb-4 floating"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Visit Us</h3>
+                    <p class="text-purple-200">123 Tech Street, Digital City</p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="max-w-2xl mx-auto">
+                <div class="feature-card p-8 rounded-xl zoom-in card-4">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-white mb-2">Name</label>
+                                <input type="text" class="contact-input w-full px-4 py-2 rounded-lg" placeholder="Your name">
+                            </div>
+                            <div>
+                                <label class="block text-white mb-2">Email</label>
+                                <input type="email" class="contact-input w-full px-4 py-2 rounded-lg" placeholder="Your email">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-white mb-2">Subject</label>
+                            <input type="text" class="contact-input w-full px-4 py-2 rounded-lg" placeholder="Message subject">
+                        </div>
+                        <div>
+                            <label class="block text-white mb-2">Message</label>
+                            <textarea class="contact-input w-full px-4 py-2 rounded-lg h-32" placeholder="Your message"></textarea>
+                        </div>
+                        <button type="submit" class="submit-button w-full py-3 rounded-lg text-white font-semibold">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Same animation scripts as before
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+
+        const cards = document.querySelectorAll('.zoom-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.visibility = 'visible';
+                    entry.target.classList.add('zoom-in');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        cards.forEach(card => {
+            card.style.visibility = 'hidden';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html> 

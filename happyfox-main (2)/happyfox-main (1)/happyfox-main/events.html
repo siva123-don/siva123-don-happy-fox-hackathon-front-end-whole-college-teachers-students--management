@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Campus Acadex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .nav-background {
+            background: rgba(128, 128, 128, 0.5);
+            padding-top: 1rem;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FF0000, #FF69B4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .gradient-button {
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .event-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin-top: 2rem;
+        }
+
+        .event-card {
+            flex: 0 0 220px;
+            min-height: 180px;
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(128, 0, 128, 0.1));
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .event-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.3);
+            border-color: rgba(255, 105, 180, 0.5);
+        }
+
+        .event-card:hover::before {
+            opacity: 0.9;
+        }
+
+        .event-content {
+            position: relative;
+            z-index: 2;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: #FF69B4;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .event-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .event-card:hover .event-content {
+            transform: scale(1.05);
+        }
+
+        .event-card:hover .event-date {
+            color: white;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            50% {
+                transform: scale(1.1) translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .event-card {
+            animation: popIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: calc(var(--order) * 0.2s);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="fixed w-full z-50 nav-background">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <div class="logo-text">
+                    AcadeX
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-pink-500">Home</a>
+                    <a href="features.html" class="text-white hover:text-pink-500">Features</a>
+                    <a href="events.html" class="text-white hover:text-pink-500">Events</a>
+                    <a href="career.html" class="text-white hover:text-pink-500">Career</a>
+                    <a href="contact.html" class="text-white hover:text-pink-500">Contact</a>
+                </div>
+                <a href="login.html" class="gradient-button px-8 py-2 rounded-lg">
+                    LOGIN
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4 gradient-text">Upcoming Events</h1>
+                <p class="text-lg text-gray-300">Join our exciting educational events</p>
+            </div>
+
+            <div class="event-grid">
+                <!-- Tech Summit -->
+                <div class="event-card" style="--order: 1">
+                    <div class="event-content">
+                        <div class="event-date">MAR 15, 2024</div>
+                        <h3 class="event-title">Tech Summit</h3>
+                        <p class="event-description">
+                            Global tech leaders share insights on AI and VR in education.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Hackathon -->
+                <div class="event-card" style="--order: 2">
+                    <div class="event-content">
+                        <div class="event-date">APR 1, 2024</div>
+                        <h3 class="event-title">Hackathon</h3>
+                        <p class="event-description">
+                            24-hour coding challenge for innovative learning solutions.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Workshop -->
+                <div class="event-card" style="--order: 3">
+                    <div class="event-content">
+                        <div class="event-date">APR 15, 2024</div>
+                        <h3 class="event-title">AI Workshop</h3>
+                        <p class="event-description">
+                            Hands-on workshop on AI applications in education.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

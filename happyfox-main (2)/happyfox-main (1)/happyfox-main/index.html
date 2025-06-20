@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect AcadeX - Next Gen Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000000;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .nav-background {
+            background: rgba(128, 128, 128, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .feature-card {
+            background: linear-gradient(45deg, #FF69B4, #800080);
+            border-radius: 10px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .feature-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(128, 0, 128, 0.1));
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 50px auto;
+            color: white;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 105, 180, 0.2);
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 0, 0, 0.9), rgba(255, 105, 180, 0.9), rgba(0, 0, 128, 0.9));
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 1;
+        }
+
+        .feature-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) rotateX(10deg) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.4);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-content {
+            transform: scale(1);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover .card-content {
+            transform: scale(1.1);
+        }
+
+        .zoom-in {
+            animation: zoomIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .gradient-button {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            color: white;
+            transition: all 0.3s ease;
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .gradient-button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .gradient-icon {
+            background: linear-gradient(45deg, #ff0000, #ff69b4, #000080);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .main-heading {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 3rem;
+            }
+        }
+
+        /* Add staggered delay for cards */
+        .card-1 { animation-delay: 0.2s; }
+        .card-2 { animation-delay: 0.4s; }
+        .card-3 { animation-delay: 0.6s; }
+
+        .bounce-arrow {
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(10px) translateX(-50%);
+            }
+        }
+
+        .bounce-arrow:hover .gradient-text {
+            transform: scale(1.2);
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-background">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-bold gradient-text tracking-wider">
+                    AcadeX
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:gradient-text transition-colors duration-300">Home</a>
+                    <!-- <a href="register.html" class="text-white hover:gradient-text transition-colors duration-300">Register Now</a> -->
+                    <a href="features.html" class="text-white hover:gradient-text transition-colors duration-300">Features</a>
+                    <a href="events.html" class="text-white hover:gradient-text transition-colors duration-300">Events</a>
+                    <a href="career.html" class="text-white hover:gradient-text transition-colors duration-300">Career</a>
+                    <a href="contact.html" class="text-white hover:gradient-text transition-colors duration-300">Contact</a>
+                    <a href="ai-assistant.html" class="text-white hover:gradient-text transition-colors duration-300">
+                        <i class="fas fa-robot mr-2"></i>AI Assistant
+                    </a>
+                </div>
+                <a href="login.html" class="gradient-button px-8 py-2 rounded-lg">
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="min-h-screen flex items-center justify-center">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-6xl font-bold mb-8 gradient-text">
+                Welcome to the Future
+            </h1>
+            <p class="text-xl text-gray-300 mb-12">
+                Experience learning like never before with AI-powered collaborative education platform
+            </p>
+            <div class="flex justify-center gap-6 relative">
+                <a href="features.html" class="gradient-button px-8 py-3 rounded-lg">
+                    GET STARTED
+                </a>
+                <button id="learnMoreBtn" class="gradient-button px-8 py-3 rounded-lg">
+                    LEARN MORE
+                </button>
+                <div class="absolute bottom-[-100px] left-1/2 transform -translate-x-1/2 bounce-arrow">
+                    <i class="fas fa-chevron-down text-4xl gradient-text"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add this section before the Learn More Modal -->
+    <section class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="feature-card p-8 relative overflow-hidden card-1">
+                <div class="card-content flex items-center">
+                    <div class="w-1/3">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1693/1693746.png" alt="AI Assistant" class="w-full h-auto filter drop-shadow-lg hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="w-2/3 pl-8">
+                        <h3 class="text-2xl font-bold text-white mb-4">AI Assistant</h3>
+                        <p class="text-gray-200 mb-6">Get instant help and answers to your questions with our intelligent AI Assistant. Available 24/7 to support your learning journey.</p>
+                        <a href="ai-assistant.html" class="gradient-button px-6 py-2 rounded-lg inline-flex items-center">
+                            <i class="fas fa-comments mr-2"></i>
+                            Chat Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learn More Modal -->
+    <div id="learnMoreModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2 class="text-3xl font-bold mb-6 gradient-text">About Campus Connect</h2>
+            <div class="space-y-4">
+                <p>Campus Connect is a revolutionary educational platform that combines cutting-edge technology with personalized learning experiences.</p>
+                
+                <h3 class="text-xl font-bold mt-4 mb-2">How We Help Students:</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Personalized AI-driven learning paths adapted to your pace and style</li>
+                    <li>Immersive VR classrooms for hands-on learning experiences</li>
+                    <li>Global networking opportunities with students and educators</li>
+                    <li>Real-time progress tracking and performance analytics</li>
+                    <li>24/7 access to educational resources and support</li>
+                </ul>
+
+                <p class="mt-4">Join us in revolutionizing education through technology and innovation.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+
+        // Add intersection observer for cards
+        const cards = document.querySelectorAll('.feature-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.visibility = 'visible';
+                    entry.target.classList.add('zoom-in');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        cards.forEach(card => {
+            card.style.visibility = 'hidden';
+            observer.observe(card);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('learnMoreModal');
+        const btn = document.getElementById('learnMoreBtn');
+        const closeBtn = document.getElementById('closeModal');
+
+        btn.onclick = function() {
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        closeBtn.onclick = function() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.classList.remove('show');
+                setTimeout(() => modal.style.display = 'none', 300);
+            }
+        }
+
+        // Smooth scroll to AI chatbot section when arrow is clicked
+        document.querySelector('.bounce-arrow').addEventListener('click', () => {
+            const chatbotSection = document.querySelector('.feature-card');
+            chatbotSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        async function loginUser(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                const userRef = firebase.firestore().doc(`users/${user.uid}`);
+                const userSnap = await userRef.get();
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    const role = userData.role || "student";
+
+                    localStorage.setItem("userRole", role);
+
+                    if (role === "teacher") {
+                        window.location.href = "teacher-dashboard.html";
+                    } else {
+                        window.location.href = "student-dashboard.html";
+                    }
+                } else {
+                    alert("User role not found. Please register first.");
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwjmYgFRe3i-6uEysNVDYbk2xe-OeNKjg",
+            authDomain: "acadex-efefa.firebaseapp.com",
+            projectId: "acadex-efefa",
+            storageBucket: "acadex-efefa.appspot.com",
+            messagingSenderId: "175625880958",
+            appId: "1:175625880958:web:9a054de3dc728be171df2f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</body>
+</html>
